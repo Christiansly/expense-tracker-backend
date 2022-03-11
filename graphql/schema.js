@@ -39,12 +39,12 @@ module.exports = buildSchema(`
 
     type RootQuery {
         login(email: String!, password: String!): AuthData!
-        getExpenses(): ExpensesData!
+        getExpenses: ExpensesData!
     }
 
     type RootMutation {
         createUser(userInput: UserInputData): User!
-        createExpense(expenseInput: ExpensesData): Expense!
+        createExpense(expenseInput: ExpenseData): Expense!
     }
 
     schema {

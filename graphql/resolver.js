@@ -96,7 +96,7 @@ module.exports = {
       _id: createdExpense._id.toString(),
     };
   },
-  expenses: async function ({ page }, req) {
+  expenses: async function (req) {
     if (!req.isAuth) {
       const error = new Error("Not authenticated!");
       error.code = 401;
