@@ -35,7 +35,7 @@ module.exports = {
     return { ...createdUser._doc, _id: createdUser._id.toString() };
   },
   login: async function ({ email, password }) {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).populate("expenses");
     if (!user) {
       const error = new Error("User not found");
       error.code = 401;
@@ -47,6 +47,8 @@ module.exports = {
       error.code = 401;
       throw error;
     }
+
+
     const token = jsonwebtoken.sign(
       {
         userId: user._id.toString(),
@@ -55,7 +57,7 @@ module.exports = {
       "secret",
       { expiresIn: "1h" }
     );
-    return { token: token, userId: user._id.toString() };
+    return { token: token, userId: user._id.toString(), name: user.name, expenses: user.expenses};
   },
   createExpense: async function ({ expenseInput }, req) {
     if (!req.isAuth) {
@@ -76,6 +78,7 @@ module.exports = {
       error.code = 422;
       throw error;
     }
+    console.log(req.userId)
     const user = await User.findById(req.userId);
     if (!user) {
       const error = new Error("Invalid user.");
